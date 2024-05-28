@@ -1,0 +1,12 @@
+# Ignore vendor directory created by Composer
+/vendor/
+
+# Ignore cache and logs
+/cache/
+/logs/
+
+# Ignore configuration files with sensitive data
+/config/config.php
+
+# Ignore IDE project files
+.idea/
