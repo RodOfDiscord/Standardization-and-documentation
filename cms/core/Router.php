@@ -14,7 +14,8 @@ class Router
     public function run()
     {
         $parts = explode('/', $this->route);
-        $controller = $parts[0];
-        $method = $parts[1];
+        $controller = ucfirst($parts[0]).`Controller `;
+        $method = `action`.ucfirst($parts[1]);
+        echo $controller;
     }
 }
