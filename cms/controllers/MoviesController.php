@@ -2,18 +2,21 @@
 
 namespace controllers;
 
-class MoviesController
+use core\Controller;
+use models\Movies;
+use core\Template;
+use core\DB;
+
+class MoviesController extends Controller
 {
-    public function actionAdd()
-    {
-        echo 'NewsController-> actionAdd';
-    }
-
-// news/index
-
     public function actionIndex()
     {
-        echo 'NewsController-> actionIndex';
+        $movies = Movies::getMovies();
+        $this->template->setParam('movies', $movies);
+        return $this->render('views/movies/index.php');
     }
-
 }
+
+
+
+
