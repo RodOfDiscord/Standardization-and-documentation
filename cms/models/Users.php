@@ -66,5 +66,15 @@ class Users extends Model
         $user->firstName = $firstName;
         $user->save();
     }
+    public static function isAdmin()
+    {
+
+        if (!self::IsUserLogged()) {
+            return false;
+        }
+
+        $user = Core::get()->session->get('user');
+        return isset($user['isAdmin']) && $user['isAdmin'] == 1;
+    }
 
 }
