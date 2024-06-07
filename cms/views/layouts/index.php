@@ -1,8 +1,15 @@
 <?php
-/** @var string $Title */
-/** @var string $Content */
 
 use models\Users;
+
+if (Users::IsUserLogged()) {
+    echo "Ви залогінені!";
+} else {
+    echo "Ви не залогінені!";
+}
+
+/** @var string $Title */
+/** @var string $Content */
 
 if (empty($Title)) {
     $Title = "";

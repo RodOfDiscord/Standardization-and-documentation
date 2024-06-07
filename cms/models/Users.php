@@ -1,10 +1,8 @@
 <?php
-
 namespace models;
 
 use core\Model;
 use core\Core;
-
 
 /**
  * @property string $login Логін
@@ -15,7 +13,6 @@ use core\Core;
  * @property int $isAdmin Чи є користувач адміністратором
  */
 
-
 class Users extends Model
 {
     public static $tableName = 'users';
@@ -25,7 +22,7 @@ class Users extends Model
         $rows = self::findByCondition(['login' => $login, 'password' => $password]);
 
         if (!empty($rows)) {
-            return $rows;
+            return $rows[0];
         } else {
             return null;
         }
@@ -36,7 +33,7 @@ class Users extends Model
         $rows = self::findByCondition(['login' => $login]);
 
         if (!empty($rows)) {
-            return $rows;
+            return $rows[0];
         } else {
             return null;
         }
@@ -66,9 +63,9 @@ class Users extends Model
         $user->firstName = $firstName;
         $user->save();
     }
+
     public static function isAdmin()
     {
-
         if (!self::IsUserLogged()) {
             return false;
         }
@@ -77,4 +74,6 @@ class Users extends Model
         return isset($user['isAdmin']) && $user['isAdmin'] == 1;
     }
 
+
 }
+

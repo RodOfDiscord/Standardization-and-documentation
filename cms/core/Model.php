@@ -1,12 +1,15 @@
 <?php
 
 namespace core;
-use models\News;
+
+use models\Comments;
+
 class Model
 {
     protected $fieldsArray;
     protected static $primaryKey = 'id';
     protected static $tableName = '';
+
     public function __construct()
     {
         $this->fieldsArray = [];
@@ -46,9 +49,9 @@ class Model
     public static function findByCondition($conditionAssocArray) {
         $arr = Core::get()->db->select(static::$tableName, '*', $conditionAssocArray);
         if(count($arr) > 0) {
-            return $arr[0];
+            return $arr;
         } else {
-            return null;
+            return [];
         }
     }
 
@@ -62,18 +65,15 @@ class Model
                 $isInsert = true;
             }
         }
-        if ($isInsert)
-            //insert
-        {
+
+        if ($isInsert) {
+            // Insert
             Core::get()->db->insert(static::$tableName, $this->fieldsArray);
-        }
-        else
-            //update
-        {
-            Core::get()->db->update(static::$tableName, $this->fieldsArray,
-                [
-                    static::$primaryKey => $this->{static::$primaryKey}
-                ]);
+        } else {
+            // Update
+            Core::get()->db->update(static::$tableName, $this->fieldsArray, [
+                static::$primaryKey => $this->{static::$primaryKey}
+            ]);
         }
     }
 }

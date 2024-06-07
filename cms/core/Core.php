@@ -27,10 +27,25 @@ class Core {
     }
     public function run($route) {
         $this->router = new Router($route);
+
+        // Перевірка, чи залогінений користувач
+        if (isset($_SESSION['user_id'])) {
+            // Якщо користувач залогінений, передаємо його ID в шаблон
+            $this->template->setParam('user_id', $_SESSION['user_id']);
+        } else {
+            // Якщо користувач не залогінений, передаємо null в шаблон
+            $this->template->setParam('user_id', null);
+        }
+
+        // Запускаємо роутер
         $params = $this->router->run();
-        if(!empty($params))
+
+        // Якщо роутер повертає параметри, передаємо їх в шаблон
+        if (!empty($params)) {
             $this->template->setParams($params);
+        }
     }
+
     public function done() {
         $this->template->display();
         $this->router->done();

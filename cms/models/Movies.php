@@ -40,4 +40,43 @@ class Movies extends Model
         $sth->execute();
         return $sth->fetch(\PDO::FETCH_ASSOC);
     }
+    /**
+     * Додати новий фільм в базу даних
+     * @param array $data
+     * @return bool
+     */
+    public static function addMovie($data) {
+        $db = Core::get()->db;
+        return $db->insert(self::$tableName, $data);
+    }
+
+    /**
+     * Оновити фільм у базі даних
+     * @param int $id
+     * @param array $data
+     * @return bool
+     */
+    public static function updateMovie($id, $data) {
+        try {
+            $db = Core::get()->db;
+            return $db->update(self::$tableName, $data, ['id' => $id]);
+        } catch (\PDOException $e) {
+            // Вивести повідомлення про помилку
+            echo "Помилка при оновленні фільму: " . $e->getMessage();
+            return false;
+        }
+    }
+    public static function deleteMovieById($id) {
+        try {
+            $db = Core::get()->db;
+            return $db->delete(self::$tableName, ['id' => $id]);
+        } catch (\PDOException $e) {
+            // Вивести повідомлення про помилку
+            echo "Помилка при видаленні фільму: " . $e->getMessage();
+            return false;
+        }
+    }
+
+
+
 }
