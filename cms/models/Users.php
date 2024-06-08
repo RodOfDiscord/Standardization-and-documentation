@@ -73,6 +73,19 @@ class Users extends Model
         $user = Core::get()->session->get('user');
         return isset($user['isAdmin']) && $user['isAdmin'] == 1;
     }
+    public static function updateUser($userId, $address, $nickname)
+    {
+        $user = self::getUserById($userId);
+        if ($user) {
+            $user->address = $address;
+            $user->nickname = $nickname;
+            $user->save();
+        }
+    }
+    public static function getUserById($id)
+    {
+        return self::findById($id);
+    }
 
 
 }

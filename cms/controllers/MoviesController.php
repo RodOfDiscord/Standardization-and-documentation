@@ -3,9 +3,11 @@
 namespace controllers;
 
 use core\Controller;
+use core\Core;
 use models\Movies;
 use models\Comments;
 use models\Users;
+use models\Ratings;
 
 class MoviesController extends Controller
 {
@@ -16,33 +18,59 @@ class MoviesController extends Controller
         return $this->render('views/movies/index.php');
     }
 
-    public function actionView($id)
+    public function actionView($params)
     {
-        $movie = Movies::findById($id);
-        $comments = Comments::getCommentsByMovieId($id);
-        $this->template->setParam('movie', $movie);
-        $this->template->setParam('comments', $comments);
+        $movieId = $params[0];
+        $movie = Movies::getMovieById($movieId);
+        $averageRating = Ratings::getAverageRating($movieId);
+        $comments = Comments::getCommentsByMovieId($movieId);
+
+        $this->template->setParams([
+            'movie' => $movie,
+            'averageRating' => $averageRating,
+            'comments' => $comments
+        ]);
+
         return $this->render('views/movies/view.php');
+    }
+
+    public function actionRate($params)
+    {
+        $movieId = $params[0];
+        $rating = $_POST['rating'];
+        $user = Users::IsUserLogged() ? Users::getUserById(Core::get()->session->get('user')['id']) : null;
+
+        if ($user) {
+            $existingRating = Ratings::getRatingsByMovieId($movieId, $user['id']);
+            if ($existingRating) {
+                Ratings::updateRating($existingRating['ID'], ['Rating' => $rating]);
+            } else {
+                Ratings::addRating(['Movie_ID' => $movieId, 'User_ID' => $user['id'], 'Rating' => $rating]);
+            }
+        }
+        header("Location: /movies/view/{$movieId}");
+        exit;
     }
 
     public function actionAddComment()
     {
-        if ($this->isPost && isset($_SESSION['user_id'])) {
+        // Перевірка, чи був запит POST і чи залогінений користувач
+        if ($this->isPost && Users::IsUserLogged()) {
             // Отримання ID користувача з сесії
-            $userId = $_SESSION['user_id'];
+            $userId = $_SESSION['user']['id'];
 
             // Отримання ID фільму та коментаря з POST-запиту
             $movieId = $this->post->get('movie_id');
             $commentContent = $this->post->get('comment');
 
-            // Додавання коментаря
-            Comments::addComment($movieId, $userId, $commentContent);
+            // Перевірка, чи були надані movie_id та comment
+            if ($movieId && $commentContent) {
+                // Додавання коментаря
+                Comments::addComment($movieId, $userId, $commentContent);
 
-            // Перенаправлення на сторінку перегляду фільму
-            $this->redirect('/movies/view/' . $movieId);
-        } else {
-            // Якщо користувач не залогінений, перенаправлення на головну сторінку
-            $this->redirect('/');
+                // Перенаправлення на сторінку перегляду фільму
+                $this->redirect('/movies/view/' . $movieId);
+            }
         }
     }
 }

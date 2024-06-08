@@ -54,7 +54,10 @@ class Model
             return [];
         }
     }
-
+    public static function getUserById($userId)
+    {
+        return self::findById($userId);
+    }
     public function save() {
         $isInsert = false;
         if(!isset($this->{static::$primaryKey})) {
@@ -75,5 +78,6 @@ class Model
                 static::$primaryKey => $this->{static::$primaryKey}
             ]);
         }
+
     }
 }

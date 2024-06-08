@@ -12,16 +12,16 @@ use models\Users;
     <h1><?php echo htmlspecialchars($movie['title'] ?? ''); ?></h1>
 
     <h2>Коментарі</h2>
-    <?php if (!empty($comments)): ?>
-        <?php foreach ($comments as $comment): ?>
-            <div class="comment mb-3">
-                <p><strong><?php echo htmlspecialchars($comment['user_id']); ?>:</strong></p>
-                <p><?php echo htmlspecialchars($comment['content']); ?></p>
-            </div>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <p>Немає коментарів.</p>
-    <?php endif; ?>
+    <?php foreach ($comments as $comment): ?>
+        <?php $user = Users::getUserById($comment['user_id']); ?>
+        <div class="comment mb-3">
+            <?php if ($user && isset($user['firstName']) && isset($user['lastName'])): ?>
+                <p><strong><?php echo htmlspecialchars($user['firstName'] . ' ' . $user['lastName']); ?>:</strong></p>
+            <?php endif; ?>
+            <p><?php echo htmlspecialchars($comment['content']); ?></p>
+        </div>
+    <?php endforeach; ?>
+
 
     <?php if (Users::IsUserLogged()): ?>
         <h3>Додати коментар</h3>

@@ -37,6 +37,7 @@
                 <div class="col-md-4 mb-4">
                     <div class="card">
                         <div class="btn-container">
+                            <a href="/movies/rate/<?php echo htmlspecialchars($movie['id']); ?>" class="btn btn-secondary">Переглянути та оцінити</a>
                             <a href="/movies/view?id=<?php echo htmlspecialchars($movie['id']); ?>" class="btn btn-secondary">Коментувати</a>
                         </div>
                         <div class="card-img-container">
