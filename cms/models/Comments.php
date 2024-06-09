@@ -1,5 +1,4 @@
 <?php
-
 namespace models;
 
 use core\Model;
@@ -17,7 +16,13 @@ class Comments extends Model
     public static $tableName = 'comments';
 
     public static function getCommentsByMovieId($movie_id) {
-        return self::findByCondition(['movie_id' => $movie_id]);
+        $db = Core::get()->db;
+        $sql = "SELECT comments.*, CONCAT(users.firstname, ' ', users.lastname) AS username 
+                FROM comments 
+                JOIN users ON comments.user_id = users.id 
+                WHERE comments.movie_id = :movie_id";
+        $params = ['movie_id' => $movie_id];
+        return $db->fetchAll($sql, $params);
     }
 
     public static function addComment($movie_id, $user_id, $content) {
@@ -29,4 +34,5 @@ class Comments extends Model
         $comment->save();
     }
 }
+
 

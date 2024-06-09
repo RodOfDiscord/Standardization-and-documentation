@@ -107,4 +107,18 @@ class DB {
         $sth->execute();
         return $sth->rowCount();
     }
+
+    public function query($sql, $params = []) {
+        $sth = $this->pdo->prepare($sql);
+        foreach ($params as $key => $value) {
+            $sth->bindValue(":{$key}", $value);
+        }
+        $sth->execute();
+        return $sth;
+    }
+
+    public function fetchAll($sql, $params = []) {
+        $sth = $this->query($sql, $params);
+        return $sth->fetchAll();
+    }
 }

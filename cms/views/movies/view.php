@@ -1,39 +1,45 @@
 <?php
-
-
-use models\Users;
-
-/** @var array $movie Інформація про фільм */
-/** @var array $comments Список коментарів */
-/** @var bool $isUserLogged Чи залогінений користувач */
+/** @var array $movie */
+/** @var float $averageRating */
+/** @var array $comments */
 ?>
+<div class="container">
+    <h1><?= htmlspecialchars($movie['title']) ?></h1>
+    <p>Рік випуску: <?= htmlspecialchars($movie['release_Year']) ?></p>
+    <p>Жанр: <?= htmlspecialchars($movie['genre']) ?></p>
+    <p>Опис: <?= htmlspecialchars($movie['Txt_Description']) ?></p>
+    <p>Середня оцінка: <?= htmlspecialchars($averageRating) ?></p>
 
-<div class="container mt-5">
-    <h1><?php echo htmlspecialchars($movie['title'] ?? ''); ?></h1>
-
-    <h2>Коментарі</h2>
-    <?php foreach ($comments as $comment): ?>
-        <?php $user = Users::getUserById($comment['user_id']); ?>
-        <div class="comment mb-3">
-            <?php if ($user && isset($user['firstName']) && isset($user['lastName'])): ?>
-                <p><strong><?php echo htmlspecialchars($user['firstName'] . ' ' . $user['lastName']); ?>:</strong></p>
-            <?php endif; ?>
-            <p><?php echo htmlspecialchars($comment['content']); ?></p>
-        </div>
-    <?php endforeach; ?>
-
-
-    <?php if (Users::IsUserLogged()): ?>
-        <h3>Додати коментар</h3>
-        <form action="/movies/addComment" method="post">
-            <input type="hidden" name="movie_id" value="<?php echo htmlspecialchars($movie['id'] ?? ''); ?>">
-            <div class="mb-3">
-                <label for="comment" class="form-label">Ваш коментар</label>
-                <textarea id="comment" name="comment" class="form-control" rows="4" required></textarea>
+    <?php if (models\Users::IsUserLogged()): ?>
+        <form method="post" action="">
+            <div class="form-group">
+                <label for="rating">Ваша оцінка:</label>
+                <select id="rating" name="rating" class="form-control">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
             </div>
-            <button type="submit" class="btn btn-primary">Надіслати</button>
+            <div class="form-group">
+                <label for="comment">Ваш коментар:</label>
+                <textarea id="comment" name="comment" class="form-control" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Залишити оцінку та коментар</button>
         </form>
     <?php else: ?>
-        <p>Будь ласка, <a href="/users/login">увійдіть</a>, щоб залишити коментар.</p>
+        <p>Щоб залишити оцінку і коментар, будь ласка, <a href="/users/login">увійдіть в систему</a>.</p>
+    <?php endif; ?>
+
+    <h2>Коментарі</h2>
+    <?php if (!empty($comments)): ?>
+        <ul>
+            <?php foreach ($comments as $comment): ?>
+                <li><strong><?= htmlspecialchars($comment['username'] ?? 'Анонімний користувач') ?>:</strong> <?= htmlspecialchars($comment['content']) ?></li>
+            <?php endforeach; ?>
+        </ul>
+    <?php else: ?>
+        <p>Немає коментарів до цього фільму.</p>
     <?php endif; ?>
 </div>
