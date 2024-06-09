@@ -17,8 +17,6 @@ class MoviesController extends Controller
         $this->template->setParam('movies', $movies);
         return $this->render('views/movies/index.php');
     }
-
-    // Метод для відображення деталей фільму та обробки додавання рейтингу і коментаря
     public function actionView($params)
     {
         $movieId = $params[0];
@@ -28,7 +26,6 @@ class MoviesController extends Controller
             $this->handlePostRequest($movieId);
         }
 
-        // Отримуємо дані для відображення
         $movie = Movies::getMovieById($movieId);
         $averageRating = Ratings::getAverageRating($movieId);
         $comments = Comments::getCommentsByMovieId($movieId);
@@ -42,7 +39,6 @@ class MoviesController extends Controller
         return $this->render('views/movies/view.php');
     }
 
-    // Метод для обробки POST-запитів на додавання рейтингу і коментаря
     private function handlePostRequest($movieId)
     {
         if (Users::IsUserLogged()) {
@@ -51,11 +47,13 @@ class MoviesController extends Controller
             // Обробка рейтингу
             if (isset($_POST['rating'])) {
                 $rating = $_POST['rating'];
-                $existingRating = Ratings::getRatingsByMovieId($movieId, $userId);
-                if ($existingRating) {
-                    Ratings::updateRating($existingRating['ID'], ['Rating' => $rating]);
-                } else {
-                    Ratings::addRating(['Movie_ID' => $movieId, 'User_ID' => $userId, 'Rating' => $rating]);
+                if ($rating !== '') {
+                    $existingRating = Ratings::getRatingByUserIdAndMovieId($userId, $movieId);
+                    if ($existingRating) {
+                        Ratings::updateRating($existingRating['ID'], ['Rating' => $rating]);
+                    } else {
+                        Ratings::addRating(['Movie_ID' => $movieId, 'User_ID' => $userId, 'Rating' => $rating]);
+                    }
                 }
             }
 
@@ -67,8 +65,8 @@ class MoviesController extends Controller
                 }
             }
 
-            // Перенаправлення на ту ж сторінку для уникнення повторної відправки форми
             $this->redirect("/movies/view/{$movieId}");
         }
     }
+
 }

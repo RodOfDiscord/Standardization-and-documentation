@@ -35,7 +35,7 @@ if (empty($Content)) {
             color: #ffffff !important;
         }
         .nav-link:hover {
-            color: #ff69b4 !important;
+            color: #00050a !important;
         }
         header {
             background-color: #007bff;
@@ -86,7 +86,6 @@ if (empty($Content)) {
     <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
         <li><a href="/" class="nav-link px-2">Головна</a></li>
         <li><a href="#" class="nav-link px-2">Customers</a></li>
-        <li><a href="/movies/index" class="nav-link px-2">Фільми</a></li>
         <?php if (Users::isAdmin()) : ?>
             <li><a href="/admin/edit" class="nav-link px-2">Редагувати фільми</a></li>
             <li><a href="/admin/add" class="nav-link px-2">Додати фільм</a></li>

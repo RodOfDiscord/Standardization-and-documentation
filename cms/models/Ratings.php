@@ -62,4 +62,13 @@ class Ratings extends Model
         $result = $sth->fetch(\PDO::FETCH_ASSOC);
         return $result ? (float) $result['average_rating'] : null;
     }
+    public static function getRatingByUserIdAndMovieId($userId, $movieId) {
+        $db = Core::get()->db;
+        $sql = "SELECT * FROM " . self::$tableName . " WHERE User_ID = :userId AND Movie_ID = :movieId";
+        $sth = $db->pdo->prepare($sql);
+        $sth->bindValue(':userId', $userId, \PDO::PARAM_INT);
+        $sth->bindValue(':movieId', $movieId, \PDO::PARAM_INT);
+        $sth->execute();
+        return $sth->fetch(\PDO::FETCH_ASSOC);
+    }
 }

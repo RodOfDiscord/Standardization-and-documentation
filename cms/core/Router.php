@@ -11,7 +11,7 @@ class Router {
     public function run() {
         $parts = explode('/', $this->route);
         if(strlen($parts[0]) == 0) {
-            $parts[0] = "site";
+            $parts[0] = "movies";
             $parts[1] = "index";
         }
         if(count($parts) == 1) {

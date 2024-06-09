@@ -12,22 +12,21 @@
         .card-img-container img {
             width: 100%;
             height: 100%;
-            object-fit: contain;
+            object-fit: cover;
         }
 
         .card-body {
-            height: 300px;
+            height: 150px;
             overflow-y: auto;
         }
 
         .btn-container {
-            position: relative;
+            margin-top: 10px;
+            text-align: center;
         }
 
         .btn-container .btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
+            margin-top: 10px;
         }
     </style>
     <h1 class="mb-4">Наявні фільми</h1>
@@ -36,9 +35,6 @@
             <?php foreach ($movies as $movie): ?>
                 <div class="col-md-4 mb-4">
                     <div class="card">
-                        <div class="btn-container">
-                            <a href="/movies/view/<?php echo htmlspecialchars($movie['id']); ?>" class="btn btn-secondary">Переглянути, оцінити та коментувати</a>
-                        </div>
                         <div class="card-img-container">
                             <?php if (!empty($movie['image'])): ?>
                                 <img src="data:image/jpeg;base64,<?php echo base64_encode($movie['image']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($movie['title']); ?>">
@@ -53,6 +49,9 @@
                                 <strong>Жанр:</strong> <?php echo htmlspecialchars($movie['genre']); ?><br>
                                 <strong>Опис:</strong> <?php echo htmlspecialchars($movie['Txt_Description']); ?>
                             </p>
+                        </div>
+                        <div class="btn-container">
+                            <a href="/movies/view/<?php echo htmlspecialchars($movie['id']); ?>" class="btn btn-secondary">Переглянути, оцінити та коментувати</a>
                         </div>
                     </div>
                 </div>
