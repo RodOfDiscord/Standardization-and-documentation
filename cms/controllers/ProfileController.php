@@ -1,45 +1,47 @@
 <?php
-
 namespace controllers;
 
 use core\Controller;
+use core\Core;
+use core\View;
 use models\Users;
-use core\Model;
+
 class ProfileController extends Controller
 {
-    public function actionIndex()
-    {
-        // Отримання даних користувача
-        $user = Users::getLoggedUser();
+    protected $view;
 
-        // Відображення сторінки профілю
-        return $this->render('views/users/profile.php', ['user' => $user]);
+    public function __construct()
+    {
+        parent::__construct();
+        $this->view = new View();
     }
 
-    public function actionUpdate()
+    public function actionIndex()
     {
-        // Перевірка, чи користувач залогінений
-        if (!Users::IsUserLogged()) {
-            return $this->redirect('/users/login');
+        // Перевіряємо, чи був відправлений POST-запит
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Отримуємо дані з форми
+            $userId = $_SESSION['user']['id'];
+            $firstName = $_POST['firstName'];
+            $lastName = $_POST['lastName'];
+
+            // Викликаємо метод для оновлення профілю користувача
+            Users::update($userId, $firstName, $lastName);
+
+            // Додаємо повідомлення успіху в сесію
+            $_SESSION['success_message'] = 'Профіль успішно оновлено.';
+
+            // Перенаправляємо користувача на сторінку профілю
+            $core = Core::get();
+            $core->redirect("/users/profile");
         }
 
-        // Обробка POST-запиту для зміни даних користувача
+        // Отримуємо дані користувача для відображення у формі
+        $user = Users::getUserById($_SESSION['user']['id']);
 
-        // Перевірка наявності POST-даних
-        if ($this->request->isPost()) {
-            // Отримання POST-даних
-            $userId = Users::getLoggedUser()['id'];
-            $address = $this->request->post('address');
-            $nickname = $this->request->post('nickname');
-
-            // Оновлення даних користувача
-            Users::updateUser($userId, $address, $nickname);
-
-            // Повернення на сторінку профілю
-            return $this->redirect('/users/profile');
-        }
-
-        // Якщо не POST-запит, перенаправлення на головну сторінку
-        return $this->redirect('/');
+        // Рендеримо шаблон сторінки профілю
+        $this->view->render('users/profile', [
+            'user' => $user
+        ]);
     }
 }

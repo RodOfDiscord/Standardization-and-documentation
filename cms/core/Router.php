@@ -21,12 +21,19 @@ class Router {
         \core\Core::get()->actionName = $parts[1];
         $controller = "controllers\\".ucfirst($parts[0])."Controller";
         $method = "action".ucfirst($parts[1]);
+
+        if ($parts[0] == "users" && $parts[1] == "profile") {
+            $controller = "controllers\\ProfileController";
+            $method = "actionIndex";
+        }
+
         if(class_exists($controller)) {
             $controllerObject = new $controller;
             Core::get()->controllerObject = $controllerObject;
             if(method_exists($controller, $method)) {
                 array_splice($parts, 0, 2);
-                return $controllerObject->$method($parts);
+                $params = $controllerObject->$method($parts);
+                return $params;
             } else {
                 $this->error(404);
             }
@@ -39,7 +46,6 @@ class Router {
     }
     public function error($code) {
         http_response_code($code);
-        //header("Location: /site/error/{$code}");
         switch($code) {
             case 404:
                 echo "404 Not Found";

@@ -1,4 +1,6 @@
 <?php
+// models/Users.php
+
 namespace models;
 
 use core\Model;
@@ -73,20 +75,28 @@ class Users extends Model
         $user = Core::get()->session->get('user');
         return isset($user['isAdmin']) && $user['isAdmin'] == 1;
     }
-    public static function updateUser($userId, $address, $nickname)
+
+    public static function update($userId, $firstName, $lastName)
     {
-        $user = self::getUserById($userId);
-        if ($user) {
-            $user->address = $address;
-            $user->nickname = $nickname;
-            $user->save();
-        }
+        $db = Core::get()->db;
+        $table = self::$tableName;
+        $row_to_update = [
+            'firstName' => $firstName,
+            'lastName' => $lastName
+        ];
+        $where = ['id' => $userId];
+
+        return $db->update($table, $row_to_update, $where);
     }
+
     public static function getUserById($id)
     {
         return self::findById($id);
     }
 
-
+    public static function getLoggedUser()
+    {
+        return Core::get()->session->get('user');
+    }
 }
 

@@ -14,6 +14,7 @@ class Core {
     public Controller $controllerObject;
     private static $instance;
     public $session;
+
     private function __construct()
     {
         $this->template = new Template($this->defaultLayoutPath);
@@ -25,6 +26,7 @@ class Core {
         $this->session = new Session();
         session_start();
     }
+
     public function run($route) {
         $this->router = new Router($route);
 
@@ -50,9 +52,15 @@ class Core {
         $this->template->display();
         $this->router->done();
     }
+
     public static function get() {
-        if(empty(self::$instance))
+        if (empty(self::$instance))
             self::$instance = new self();
         return self::$instance;
+    }
+
+    public function redirect($url) {
+        header("Location: $url");
+        exit();
     }
 }

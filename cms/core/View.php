@@ -1,5 +1,4 @@
 <?php
-
 namespace core;
 
 class View {
@@ -9,14 +8,18 @@ class View {
         $this->params = $params;
     }
 
-    public function display() {
-        extract($this->params);
-        include $this->getViewFile();
+    public function render($viewName, $params = []) {
+        $this->setParams($params);
+        $this->display($viewName);
     }
 
-    protected function getViewFile() {
-        $controllerName = Core::get()->moduleName;
-        $actionName = Core::get()->actionName;
-        return "views/{$controllerName}/{$actionName}.php";
+    public function display($viewName) {
+        extract($this->params);
+        include $this->getViewFile($viewName);
+    }
+
+    protected function getViewFile($viewName) {
+        return "views/{$viewName}.php";
     }
 }
+
