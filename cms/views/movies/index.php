@@ -1,7 +1,8 @@
-<?php
-/** @var array $movies Список фільмів */
-?>
-<div class="container mt-5">
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Наявні фільми</title>
     <style>
         .card-img-container {
             width: 100%;
@@ -28,9 +29,80 @@
         .btn-container .btn {
             margin-top: 10px;
         }
+
+        /* Стилі для маленького меню */
+        .sort-menu {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: white;
+            border: 1px solid #ddd;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+
+        .sort-menu.active {
+            display: block;
+        }
+
+        .menu-toggle-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .menu-toggle-btn {
+            display: inline-block;
+            cursor: pointer;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        #sortMenu {
+            display: none;
+            margin-top: 10px;
+        }
+
+        #sortMenu.active {
+            display: block;
+        }
     </style>
+</head>
+<body>
+<div class="container mt-5">
     <h1 class="mb-4">Наявні фільми</h1>
-    <div class="row">
+
+    <!-- Форма фільтрації -->
+    <button id="filterButton" class="btn btn-secondary">Фільтрувати</button>
+    <div id="filterForm" style="display:none;">
+        <form method="post" action="/movies/filter">
+            <div class="form-group">
+                <label for="genre">Жанр:</label>
+                <input type="text" id="genre" name="genre" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="title">Назва фільму:</label>
+                <input type="text" id="title" name="title" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="release_Year">Рік випуску:</label>
+                <input type="number" id="release_Year" name="release_Year" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary">Відправити</button>
+        </form>
+    </div>
+
+    <div id="moviesContainer" class="row">
+        <!-- Movie cards will be injected here -->
         <?php if (!empty($movies)): ?>
             <?php foreach ($movies as $movie): ?>
                 <div class="col-md-4 mb-4">
@@ -61,3 +133,16 @@
         <?php endif; ?>
     </div>
 </div>
+
+<script>
+    document.getElementById('filterButton').addEventListener('click', function() {
+        var filterForm = document.getElementById('filterForm');
+        if (filterForm.style.display === 'none') {
+            filterForm.style.display = 'block';
+        } else {
+            filterForm.style.display = 'none';
+        }
+    });
+</script>
+</body>
+</html>

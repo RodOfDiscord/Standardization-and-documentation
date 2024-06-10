@@ -38,11 +38,8 @@ class Core {
             // Якщо користувач не залогінений, передаємо null в шаблон
             $this->template->setParam('user_id', null);
         }
-
-        // Запускаємо роутер
         $params = $this->router->run();
 
-        // Якщо роутер повертає параметри, передаємо їх в шаблон
         if (!empty($params)) {
             $this->template->setParams($params);
         }

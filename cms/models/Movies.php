@@ -4,7 +4,7 @@ namespace models;
 
 use core\Model;
 use core\Core;
-
+use core\DB;
 /**
  * @property int $id ID фільму
  * @property varchar(100) $title Назва фільму
@@ -76,7 +76,15 @@ class Movies extends Model
             return false;
         }
     }
+    public static function getAll()
+    {
+        $db = Core::get()->db;
+        return $db->select('movies');
+    }
 
-
-
+    public static function getByGenre($genre)
+    {
+        $db = Core::get()->db;
+        return $db->select('movies', '*', ['genre' => $genre]);
+    }
 }

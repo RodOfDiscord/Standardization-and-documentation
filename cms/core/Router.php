@@ -4,36 +4,85 @@ namespace core;
 
 class Router {
     protected $route;
-    public function __construct($route)
-    {
+    protected $requestMethod;
+    protected $routes = [];
+
+    public function __construct($route, $requestMethod = 'GET') {
         $this->route = $route;
+        $this->requestMethod = $requestMethod;
     }
+
     public function run() {
-        $parts = explode('/', $this->route);
-        if(strlen($parts[0]) == 0) {
-            $parts[0] = "movies";
-            $parts[1] = "index";
-        }
-        if(count($parts) == 1) {
-            $parts[1] = 'index';
-        }
-        \core\Core::get()->moduleName = $parts[0];
-        \core\Core::get()->actionName = $parts[1];
-        $controller = "controllers\\".ucfirst($parts[0])."Controller";
-        $method = "action".ucfirst($parts[1]);
+        if ($this->requestMethod === 'POST') {
+            if (isset($this->routes['POST'][$this->route])) {
+                $this->execute($this->routes['POST'][$this->route]);
+                return;
+            }
+        } else {
+            $parts = explode('/', trim($this->route, '/'));
+            if (empty($parts[0])) {
+                $parts[0] = "movies";
+                $parts[1] = "index";
+            }
+            if (count($parts) == 1) {
+                $parts[1] = 'index';
+            }
 
-        if ($parts[0] == "users" && $parts[1] == "profile") {
-            $controller = "controllers\\ProfileController";
-            $method = "actionIndex";
-        }
+            \core\Core::get()->moduleName = $parts[0];
+            \core\Core::get()->actionName = $parts[1];
 
-        if(class_exists($controller)) {
+            $controller = "controllers\\" . ucfirst($parts[0]) . "Controller";
+            $method = "action" . ucfirst($parts[1]);
+
+            if ($parts[0] == "users" && $parts[1] == "profile") {
+                $controller = "controllers\\ProfileController";
+                $method = "actionIndex";
+            }
+
+            if (class_exists($controller)) {
+                $controllerObject = new $controller;
+                Core::get()->controllerObject = $controllerObject;
+
+                if (method_exists($controller, $method)) {
+                    array_splice($parts, 0, 2);
+                    $params = $controllerObject->$method($parts);
+                    return $params;
+                } else {
+                    $this->error(404);
+                }
+            } else {
+                $this->error(404);
+            }
+        }
+    }
+
+    public function error($code) {
+        http_response_code($code);
+        switch ($code) {
+            case 404:
+                echo "404 Not Found";
+                break;
+        }
+    }
+
+    public function post($route, $controllerAction) {
+        $this->routes['POST'][$route] = $controllerAction;
+    }
+    public function done() {
+
+    }
+    protected function execute($controllerAction) {
+        $parts = explode('@', $controllerAction);
+        $controller = "controllers\\" . $parts[0];
+        $method = "action" . ucfirst($parts[1]);
+
+        if (class_exists($controller)) {
             $controllerObject = new $controller;
             Core::get()->controllerObject = $controllerObject;
-            if(method_exists($controller, $method)) {
-                array_splice($parts, 0, 2);
-                $params = $controllerObject->$method($parts);
-                return $params;
+
+            if (method_exists($controller, $method)) {
+                $params = $_POST;
+                $controllerObject->$method($params);
             } else {
                 $this->error(404);
             }
@@ -41,15 +90,16 @@ class Router {
             $this->error(404);
         }
     }
-    public function done() {
-
-    }
-    public function error($code) {
-        http_response_code($code);
-        switch($code) {
-            case 404:
-                echo "404 Not Found";
-                break;
-        }
-    }
 }
+
+// Entry script (e.g., index.php)
+$route = $_SERVER['REQUEST_URI'];
+$requestMethod = $_SERVER['REQUEST_METHOD'];
+
+$router = new \core\Router($route, $requestMethod);
+
+// Define routes
+$router->post('/movies/filter', 'MoviesController@filter');
+
+// Run the router
+$router->run();

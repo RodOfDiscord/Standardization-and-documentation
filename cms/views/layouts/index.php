@@ -1,13 +1,6 @@
 <?php
 
 use models\Users;
-
-if (Users::IsUserLogged()) {
-    echo "Ви залогінені!";
-} else {
-    echo "Ви не залогінені!";
-}
-
 /** @var string $Title */
 /** @var string $Content */
 
@@ -75,7 +68,6 @@ if (empty($Content)) {
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script defer src="index.js"></script>
 </head>
 <body>
 <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start py-3 mb-4">
@@ -85,7 +77,6 @@ if (empty($Content)) {
 
     <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
         <li><a href="/" class="nav-link px-2">Головна</a></li>
-        <li><a href="#" class="nav-link px-2">Customers</a></li>
         <?php if (Users::isAdmin()) : ?>
             <li><a href="/admin/edit" class="nav-link px-2">Редагувати фільми</a></li>
             <li><a href="/admin/add" class="nav-link px-2">Додати фільм</a></li>
@@ -103,7 +94,7 @@ if (empty($Content)) {
     <?php if (Users::IsUserLogged()) : ?>
         <div class="dropdown text-end">
             <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+
             </a>
             <ul class="dropdown-menu text-small">
                 <li><a class="dropdown-item" href="/users/profile">Профіль</a></li>

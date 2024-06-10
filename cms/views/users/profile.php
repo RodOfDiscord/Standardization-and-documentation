@@ -93,9 +93,6 @@
     </style>
 </head>
 <body>
-
-
-<main>
     <div class="container">
         <h1>Редагування профілю</h1>
 
@@ -112,20 +109,20 @@
                     <p><?php echo htmlspecialchars($error); ?></p>
                 <?php endforeach; ?>
             </div>
+        <?php else: ?>
+            <!-- Форма редагування профілю -->
+            <form method="POST" action="/users/profile">
+                <div class="form-group">
+                    <label for="firstName">Ім'я:</label>
+                    <input type="text" id="firstName" name="firstName" value="<?php echo htmlspecialchars($user['firstname'] ?? ''); ?>">
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Прізвище:</label>
+                    <input type="text" id="lastName" name="lastName" value="<?php echo htmlspecialchars($user['lastname'] ?? ''); ?>">
+                </div>
+                <button type="submit">Зберегти зміни</button>
+            </form>
         <?php endif; ?>
-
-        <form method="POST" action="/users/profile">
-            <div class="form-group">
-                <label for="firstName">Ім'я:</label>
-                <input type="text" id="firstName" name="firstName" value="<?php echo htmlspecialchars($user['firstname'] ?? ''); ?>">
-            </div>
-            <div class="form-group">
-                <label for="lastName">Прізвище:</label>
-                <input type="text" id="lastName" name="lastName" value="<?php echo htmlspecialchars($user['lastname'] ?? ''); ?>">
-            </div>
-            <button type="submit">Зберегти зміни</button>
-        </form>
     </div>
-</main>
 </body>
 </html>

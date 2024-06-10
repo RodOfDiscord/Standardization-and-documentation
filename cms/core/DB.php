@@ -23,7 +23,7 @@ class DB {
             }
             $where_string .= implode(' AND ', $parts);
         } else if (is_string($where)) {
-            $where_string = $where;
+            $where_string = "WHERE {$where}";
         } else {
             $where_string = '';
         }
@@ -50,7 +50,6 @@ class DB {
         $sth->execute();
         return $sth->fetchAll();
     }
-
     public function insert($table, $rows_to_insert) {
         $field_list = implode(", ", array_keys($rows_to_insert));
         $params_array = [];
