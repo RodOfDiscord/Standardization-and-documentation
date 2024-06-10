@@ -12,7 +12,7 @@ class MoviesController extends Controller
 {
     public function actionIndex()
     {
-        $movies = Movies::getMovies();
+
         $movies = Movies::getAll();
         $this->template->setParam('movies', $movies);
         return $this->render('views/movies/index.php');
@@ -44,7 +44,6 @@ class MoviesController extends Controller
         if (Users::IsUserLogged()) {
             $userId = $_SESSION['user']['id'];
 
-            // Обробка рейтингу
             if (isset($_POST['rating'])) {
                 $rating = $_POST['rating'];
                 if ($rating !== '') {
@@ -56,8 +55,6 @@ class MoviesController extends Controller
                     }
                 }
             }
-
-            // Обробка коментаря
             if (isset($_POST['comment'])) {
                 $commentContent = $_POST['comment'];
                 if ($commentContent) {
@@ -90,4 +87,11 @@ class MoviesController extends Controller
 
         include_once 'views/movies/index.php';
     }
+    public function actionSortByRating()
+    {
+        $movies = Movies::getMoviesSortedByRating();
+        $this->template->setParam('movies', $movies);
+        return $this->render('views/movies/index.php');
+    }
+
 }

@@ -9,21 +9,25 @@ use models\Users;
 
 class UsersController extends Controller {
 
-    public function actionLogin() {
-        if (Users::IsUserLogged())
+    public function actionLogin()
+    {
+        if (Users::IsUserLogged()) {
             return $this->redirect('/');
+        }
+
         if ($this->isPost) {
-            $user = Users::FindByLoginAndPassword($this->post->get('login'), $this->post->get('password'));
-            if(!empty($user)) {
+            $user = Users::findByLoginAndPassword($this->post->get('login'), $this->post->get('password'));
+            if (!empty($user)) {
                 Users::LoginUser($user);
                 return $this->redirect('/');
-            }
-            else {
+            } else {
                 $this->addErrorMessage('Неправильний логін і/або пароль');
             }
         }
+
         return $this->render();
     }
+
 
     public function actionLogout() {
         Users::LogoutUser($_SESSION['user']);

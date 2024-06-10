@@ -32,10 +32,8 @@ class Core {
 
         // Перевірка, чи залогінений користувач
         if (isset($_SESSION['user_id'])) {
-            // Якщо користувач залогінений, передаємо його ID в шаблон
             $this->template->setParam('user_id', $_SESSION['user_id']);
         } else {
-            // Якщо користувач не залогінений, передаємо null в шаблон
             $this->template->setParam('user_id', null);
         }
         $params = $this->router->run();

@@ -21,14 +21,16 @@ class Users extends Model
 
     public static function FindByLoginAndPassword($login, $password)
     {
-        $rows = self::findByCondition(['login' => $login, 'password' => $password]);
+        $rows = self::findByCondition(['login' => $login]);
+        $user = $rows[0] ?? null;
 
-        if (!empty($rows)) {
-            return $rows[0];
+        if (!empty($user) && password_verify($password, $user->password)) {
+            return $user;
         } else {
             return null;
         }
     }
+
 
     public static function FindByLogin($login)
     {
@@ -56,15 +58,22 @@ class Users extends Model
         Core::get()->session->remove('user', $user);
     }
 
-    public static function RegisterUser($login, $password, $lastName, $firstName)
+    public static function registerUser($login, $password, $lastName, $firstName)
     {
+        $hashedPassword = self::hashPassword($password);
         $user = new Users();
         $user->login = $login;
-        $user->password = $password;
+        $user->password = $hashedPassword;
         $user->lastName = $lastName;
         $user->firstName = $firstName;
         $user->save();
     }
+
+    public static function hashPassword($password)
+    {
+        return password_hash($password, PASSWORD_DEFAULT);
+    }
+
 
     public static function isAdmin()
     {

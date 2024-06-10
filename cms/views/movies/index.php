@@ -100,7 +100,7 @@
             <button type="submit" class="btn btn-primary">Відправити</button>
         </form>
     </div>
-
+    <button id="sortButton" class="btn btn-primary">Сортувати за рейтингом</button>
     <div id="moviesContainer" class="row">
         <!-- Movie cards will be injected here -->
         <?php if (!empty($movies)): ?>
@@ -143,6 +143,21 @@
             filterForm.style.display = 'none';
         }
     });
+    document.getElementById('sortButton').addEventListener('click', function() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/movies/sortByRating', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var moviesContainer = document.getElementById('moviesContainer');
+                moviesContainer.innerHTML = xhr.responseText; // Оновлення контейнера фільмів
+            } else {
+                console.error('Сталася помилка: ' + xhr.status);
+            }
+        };
+        xhr.send('sort=rating');
+    });
+
 </script>
 </body>
 </html>

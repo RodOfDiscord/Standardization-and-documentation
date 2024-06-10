@@ -87,4 +87,13 @@ class Movies extends Model
         $db = Core::get()->db;
         return $db->select('movies', '*', ['genre' => $genre]);
     }
+    public static function getMoviesSortedByRating() {
+        $db = Core::get()->db;
+        $sql = "SELECT movies.*, AVG(ratings.Rating) AS average_rating 
+            FROM movies 
+            LEFT JOIN ratings ON movies.id = ratings.Movie_ID 
+            GROUP BY movies.id 
+            ORDER BY average_rating DESC";
+        return $db->query($sql)->fetchAll();
+    }
 }

@@ -39,6 +39,7 @@ class Router {
                 $method = "actionIndex";
             }
 
+
             if (class_exists($controller)) {
                 $controllerObject = new $controller;
                 Core::get()->controllerObject = $controllerObject;
@@ -91,7 +92,6 @@ class Router {
         }
     }
 }
-
 // Entry script (e.g., index.php)
 $route = $_SERVER['REQUEST_URI'];
 $requestMethod = $_SERVER['REQUEST_METHOD'];
@@ -100,6 +100,8 @@ $router = new \core\Router($route, $requestMethod);
 
 // Define routes
 $router->post('/movies/filter', 'MoviesController@filter');
+$router->post('/movies/sortByRating', 'MoviesController@sortByRating');
 
 // Run the router
 $router->run();
+?>
