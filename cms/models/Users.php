@@ -1,6 +1,4 @@
 <?php
-// models/Users.php
-
 namespace models;
 
 use core\Model;
@@ -14,70 +12,55 @@ use core\Core;
  * @property int $id ID користувача
  * @property int $isAdmin Чи є користувач адміністратором
  */
-
 class Users extends Model
 {
     public static $tableName = 'users';
 
-    public static function FindByLoginAndPassword($login, $password)
+    public static function findByLoginAndPassword($login, $password)
     {
-        $rows = self::findByCondition(['login' => $login]);
-        $user = $rows[0] ?? null;
-
-        if (!empty($user) && password_verify($password, $user->password)) {
-            return $user;
-        } else {
-            return null;
-        }
+        $rows = self::findByCondition(['login' => $login, 'password' => self::hashPassword($password)]);
+        return $rows[0] ?? null;
     }
 
-
-    public static function FindByLogin($login)
+    public static function findByLogin($login)
     {
         $rows = self::findByCondition(['login' => $login]);
-
-        if (!empty($rows)) {
-            return $rows[0];
-        } else {
-            return null;
-        }
+        return $rows[0] ?? null;
     }
 
-    public static function IsUserLogged()
+    public static function hashPassword($password)
+    {
+        return md5($password);
+    }
+
+    public static function isUserLogged()
     {
         return !empty(Core::get()->session->get('user'));
     }
 
-    public static function LoginUser($user)
+    public static function loginUser($user)
     {
         Core::get()->session->set('user', $user);
     }
 
-    public static function LogoutUser($user)
+    public static function logoutUser()
     {
-        Core::get()->session->remove('user', $user);
+        Core::get()->session->remove('user');
     }
 
     public static function registerUser($login, $password, $lastName, $firstName)
     {
-        $hashedPassword = self::hashPassword($password);
         $user = new Users();
         $user->login = $login;
-        $user->password = $hashedPassword;
+        $user->password = self::hashPassword($password);
         $user->lastName = $lastName;
         $user->firstName = $firstName;
         $user->save();
     }
 
-    public static function hashPassword($password)
-    {
-        return password_hash($password, PASSWORD_DEFAULT);
-    }
-
-
     public static function isAdmin()
     {
-        if (!self::IsUserLogged()) {
+        if (!self::isUserLogged()) {
             return false;
         }
 
@@ -108,4 +91,3 @@ class Users extends Model
         return Core::get()->session->get('user');
     }
 }
-

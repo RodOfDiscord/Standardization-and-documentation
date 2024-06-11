@@ -99,9 +99,8 @@ $requestMethod = $_SERVER['REQUEST_METHOD'];
 $router = new \core\Router($route, $requestMethod);
 
 // Define routes
-$router->post('/movies/filter', 'MoviesController@filter');
-$router->post('/movies/sortByRating', 'MoviesController@sortByRating');
+$router->post('/movies/filter', 'FilterController@filter');
+$router->post('/movies/sortByRating', 'FilterController@sortByRating');
 
-// Run the router
 $router->run();
 ?>

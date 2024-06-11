@@ -81,17 +81,16 @@
 <div class="container mt-5">
     <h1 class="mb-4">Наявні фільми</h1>
 
-    <!-- Форма фільтрації -->
     <button id="filterButton" class="btn btn-secondary">Фільтрувати</button>
     <div id="filterForm" style="display:none;">
         <form method="post" action="/movies/filter">
             <div class="form-group">
-                <label for="genre">Жанр:</label>
-                <input type="text" id="genre" name="genre" class="form-control">
-            </div>
-            <div class="form-group">
                 <label for="title">Назва фільму:</label>
                 <input type="text" id="title" name="title" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="genre">Жанр:</label>
+                <input type="text" id="genre" name="genre" class="form-control">
             </div>
             <div class="form-group">
                 <label for="release_Year">Рік випуску:</label>
@@ -145,7 +144,7 @@
     });
     document.getElementById('sortButton').addEventListener('click', function() {
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/movies/sortByRating', true);
+        xhr.open('POST', '/filter/sortByRating', true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.onload = function() {
             if (xhr.status === 200) {
