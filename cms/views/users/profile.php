@@ -6,123 +6,108 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #212529;
             margin: 0;
             padding: 0;
-            background: linear-gradient(to right, #ece9e6, #ffffff);
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
+            box-sizing: border-box;
         }
 
         .container {
-            background: #fff;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-            width: 100%;
-            text-align: center;
-            margin: auto; /* Додаємо цей стиль, щоб центрувати контейнер */
-            margin-top: 20px; /* Додаємо відступ зверху для виправлення проблеми з перекриттям хедера */
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         h1 {
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
-            color: #333;
-        }
-
-        .success-message, .error-message {
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-            border-radius: 5px;
-            font-weight: bold;
+            font-size: 24px;
+            margin-bottom: 20px;
         }
 
         .success-message {
             background-color: #d4edda;
             color: #155724;
             border: 1px solid #c3e6cb;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
         }
 
         .error-message {
             background-color: #f8d7da;
             color: #721c24;
             border: 1px solid #f5c6cb;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
         }
 
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
+        .form-group {
+            margin-bottom: 20px;
         }
 
         label {
             font-weight: bold;
-            margin-bottom: 0.5rem;
-            text-align: left;
+            display: block;
+            margin-bottom: 5px;
         }
 
         input[type="text"] {
-            padding: 0.5rem;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 1rem;
-            width: calc(100% - 1rem);
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 3px;
             box-sizing: border-box;
         }
 
-        button {
-            background: #4CAF50;
+        button[type="submit"] {
+            padding: 10px 20px;
+            background-color: #007bff;
             color: #fff;
-            padding: 0.75rem;
             border: none;
-            border-radius: 5px;
-            font-size: 1rem;
+            border-radius: 3px;
             cursor: pointer;
-            transition: background 0.3s;
         }
 
-        button:hover {
-            background: #45a049;
-        }
-
-        .form-group {
-            text-align: left;
+        button[type="submit"]:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Редагування профілю</h1>
+<div class="container">
+    <h1>Редагування профілю</h1>
 
-        <?php if (isset($_SESSION['success_message'])): ?>
-            <div class="success-message">
-                <?php echo htmlspecialchars($_SESSION['success_message']); ?>
-            </div>
-            <?php unset($_SESSION['success_message']); ?>
-        <?php endif; ?>
+    <?php if (isset($_SESSION['success_message'])): ?>
+        <div class="success-message">
+            <?php echo htmlspecialchars($_SESSION['success_message']); ?>
+        </div>
+        <?php unset($_SESSION['success_message']); ?>
+    <?php endif; ?>
 
-        <?php if (!empty($errors)): ?>
-            <div class="error-message">
-                <?php foreach ($errors as $error): ?>
-                    <p><?php echo htmlspecialchars($error); ?></p>
-                <?php endforeach; ?>
+    <?php if (!empty($errors)): ?>
+        <div class="error-message">
+            <?php foreach ($errors as $error): ?>
+                <p><?php echo htmlspecialchars($error); ?></p>
+            <?php endforeach; ?>
+        </div>
+    <?php else: ?>
+        <form method="POST" action="/users/profile">
+            <div class="form-group">
+                <label for="firstName">Ім'я:</label>
+                <input type="text" id="firstName" name="firstName" value="<?php echo htmlspecialchars($user['firstname'] ?? ''); ?>">
             </div>
-        <?php else: ?>
-            <!-- Форма редагування профілю -->
-            <form method="POST" action="/users/profile">
-                <div class="form-group">
-                    <label for="firstName">Ім'я:</label>
-                    <input type="text" id="firstName" name="firstName" value="<?php echo htmlspecialchars($user['firstname'] ?? ''); ?>">
-                </div>
-                <div class="form-group">
-                    <label for="lastName">Прізвище:</label>
-                    <input type="text" id="lastName" name="lastName" value="<?php echo htmlspecialchars($user['lastname'] ?? ''); ?>">
-                </div>
-                <button type="submit">Зберегти зміни</button>
-            </form>
-        <?php endif; ?>
-    </div>
+            <div class="form-group">
+                <label for="lastName">Прізвище:</label>
+                <input type="text" id="lastName" name="lastName" value="<?php echo htmlspecialchars($user['lastname'] ?? ''); ?>">
+            </div>
+            <button type="submit">Зберегти зміни</button>
+        </form>
+    <?php endif; ?>
+</div>
 </body>
 </html>

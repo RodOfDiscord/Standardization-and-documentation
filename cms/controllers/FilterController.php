@@ -41,5 +41,7 @@ class FilterController extends Controller
         $this->template->setParam('movies', $movies);
         return $this->render('views/movies/index.php');
     }
+
+
 }
 

@@ -65,4 +65,5 @@ class MoviesController extends Controller
             $this->redirect("/movies/view/{$movieId}");
         }
     }
+
 }

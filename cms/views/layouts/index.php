@@ -1,6 +1,7 @@
 <?php
 
 use models\Users;
+
 /** @var string $Title */
 /** @var string $Content */
 
@@ -22,6 +23,8 @@ if (empty($Content)) {
         body {
             background-color: #f0f8ff;
             color: #343a40;
+            margin: 0;
+            padding: 0;
         }
         .nav-link {
             font-weight: 500;
@@ -32,9 +35,12 @@ if (empty($Content)) {
         }
         header {
             background-color: #007bff;
-        }
-        .rounded-circle {
-            border: 2px solid #ffffff;
+        
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 900;
+            width: 100%;
         }
         .dropdown-menu {
             border-radius: 0.25rem;
@@ -45,6 +51,10 @@ if (empty($Content)) {
             background-color: #697dff;
             color: #ffffff;
         }
+        .container {
+            padding-top: 70px;
+            margin-bottom: 70px; /* Додаємо нижній відступ, щоб контент не перекривав футер */
+        }
         .container h1 {
             margin-top: 20px;
             margin-bottom: 20px;
@@ -52,13 +62,16 @@ if (empty($Content)) {
             text-align: center;
             color: #6982ff;
         }
-        .search-form {
-            max-width: 200px;
-        }
         footer {
             border-top: 1px solid #e9ecef;
             background-color: #007bff;
             color: #ffffff;
+
+            bottom: 0; /* Встановлюємо його внизу */
+            left: 0;
+            right: 0;
+            z-index: 900;
+            width: 100%;
         }
         .footer-link {
             color: #ffffff !important;
@@ -70,7 +83,7 @@ if (empty($Content)) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </head>
 <body>
-<header class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start py-3 mb-4">
+<header class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start py-3 mb-4 fixed-top">
     <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 link-body-emphasis text-decoration-none">
         <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
     </a>
@@ -88,6 +101,7 @@ if (empty($Content)) {
                     <li><a class="dropdown-item" href="/admin/delete">Видалити фільм</a></li>
                 </ul>
             </li>
+
         <?php endif; ?>
 
         <?php if (!Users::IsUserLogged()) : ?>

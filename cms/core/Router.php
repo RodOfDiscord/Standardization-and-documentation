@@ -37,15 +37,16 @@ class Router {
             if ($parts[0] == "users" && $parts[1] == "profile") {
                 $controller = "controllers\\ProfileController";
                 $method = "actionIndex";
+            } elseif ($parts[0] == "movies") {
+                if ($parts[1] == "filter") {
+                    $controller = "controllers\\FilterController";
+                    $method = "actionFilter";
+                } elseif ($parts[1] == "sortByRating") {
+                    $controller = "controllers\\FilterController";
+                    $method = "actionSortByRating";
+                }
             }
-            if ($parts[0] == "movies" && $parts[1] == "filter") {
-                $controller = "controllers\\FilterController";
-                $method = "actionFilter";
-            }
-            if ($parts[0] == "movies" && $parts[1] == "sortByRating") {
-                $controller = "controllers\\FilterController";
-                $method = "actionSortByRating";
-            }
+
 
             if (class_exists($controller)) {
                 $controllerObject = new $controller;
@@ -63,6 +64,8 @@ class Router {
             }
         }
     }
+
+
 
     public function error($code) {
         http_response_code($code);

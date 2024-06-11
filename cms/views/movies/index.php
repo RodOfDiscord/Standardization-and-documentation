@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Наявні фільми</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
         .card-img-container {
             width: 100%;
@@ -29,52 +30,6 @@
         .btn-container .btn {
             margin-top: 10px;
         }
-
-        /* Стилі для маленького меню */
-        .sort-menu {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: white;
-            border: 1px solid #ddd;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            display: none;
-        }
-
-        .sort-menu.active {
-            display: block;
-        }
-
-        .menu-toggle-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: #007bff;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-        }
-
-        .menu-toggle-btn {
-            display: inline-block;
-            cursor: pointer;
-            padding: 10px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-        }
-
-        #sortMenu {
-            display: none;
-            margin-top: 10px;
-        }
-
-        #sortMenu.active {
-            display: block;
-        }
     </style>
 </head>
 <body>
@@ -99,64 +54,26 @@
             <button type="submit" class="btn btn-primary">Відправити</button>
         </form>
     </div>
-    <button id="sortButton" class="btn btn-primary">Сортувати за рейтингом</button>
-    <div id="moviesContainer" class="row">
-        <!-- Movie cards will be injected here -->
-        <?php if (!empty($movies)): ?>
-            <?php foreach ($movies as $movie): ?>
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <div class="card-img-container">
-                            <?php if (!empty($movie['image'])): ?>
-                                <img src="data:image/jpeg;base64,<?php echo base64_encode($movie['image']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($movie['title']); ?>">
-                            <?php elseif (!empty($movie['image_path'])): ?>
-                                <img src="<?php echo htmlspecialchars($movie['image_path']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($movie['title']); ?>">
-                            <?php endif; ?>
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title"><?php echo htmlspecialchars($movie['title']); ?></h5>
-                            <p class="card-text">
-                                <strong>Рік випуску:</strong> <?php echo htmlspecialchars($movie['release_Year']); ?><br>
-                                <strong>Жанр:</strong> <?php echo htmlspecialchars($movie['genre']); ?><br>
-                                <strong>Опис:</strong> <?php echo htmlspecialchars($movie['Txt_Description']); ?>
-                            </p>
-                        </div>
-                        <div class="btn-container">
-                            <a href="/movies/view/<?php echo htmlspecialchars($movie['id']); ?>" class="btn btn-secondary">Переглянути, оцінити та коментувати</a>
-                        </div>
-                    </div>
-                </div>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <p>Немає доступних фільмів.</p>
-        <?php endif; ?>
+
+    <button id="sortRatingButton" class="btn btn-primary">Сортувати за рейтингом</button>
+
+    <div id="moviesContainer">
+        <div class="row" id="moviesList">
+            <?php include 'views/movies/movies_list.php'; ?>
+        </div>
     </div>
 </div>
 
 <script>
     document.getElementById('filterButton').addEventListener('click', function() {
         var filterForm = document.getElementById('filterForm');
-        if (filterForm.style.display === 'none') {
-            filterForm.style.display = 'block';
-        } else {
-            filterForm.style.display = 'none';
-        }
-    });
-    document.getElementById('sortButton').addEventListener('click', function() {
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/filter/sortByRating', true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                var moviesContainer = document.getElementById('moviesContainer');
-                moviesContainer.innerHTML = xhr.responseText; // Оновлення контейнера фільмів
-            } else {
-                console.error('Сталася помилка: ' + xhr.status);
-            }
-        };
-        xhr.send('sort=rating');
+        filterForm.style.display = filterForm.style.display === 'none' ? 'block' : 'none';
     });
 
+    document.getElementById('sortRatingButton').addEventListener('click', function() {
+        window.location.href = '/movies/sortByRating';
+    });
 </script>
+
 </body>
 </html>
