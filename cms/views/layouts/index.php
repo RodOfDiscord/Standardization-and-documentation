@@ -78,10 +78,18 @@ if (empty($Content)) {
     <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
         <li><a href="/" class="nav-link px-2">Головна</a></li>
         <?php if (Users::isAdmin()) : ?>
-            <li><a href="/admin/edit" class="nav-link px-2">Редагувати фільми</a></li>
-            <li><a href="/admin/add" class="nav-link px-2">Додати фільм</a></li>
-            <li><a href="/admin/delete" class="nav-link px-2">Видалити фільм</a></li>
+            <li class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Адміністрування
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+                    <li><a class="dropdown-item" href="/admin/edit">Редагувати фільми</a></li>
+                    <li><a class="dropdown-item" href="/admin/add">Додати фільм</a></li>
+                    <li><a class="dropdown-item" href="/admin/delete">Видалити фільм</a></li>
+                </ul>
+            </li>
         <?php endif; ?>
+
         <?php if (!Users::IsUserLogged()) : ?>
             <li><a href="/users/login" class="nav-link px-2">Увійти</a></li>
             <li><a href="/users/register" class="nav-link px-2">Зареєструватись</a></li>

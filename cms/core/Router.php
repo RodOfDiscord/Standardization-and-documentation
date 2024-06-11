@@ -38,7 +38,14 @@ class Router {
                 $controller = "controllers\\ProfileController";
                 $method = "actionIndex";
             }
-
+            if ($parts[0] == "movies" && $parts[1] == "filter") {
+                $controller = "controllers\\FilterController";
+                $method = "actionFilter";
+            }
+            if ($parts[0] == "movies" && $parts[1] == "sortByRating") {
+                $controller = "controllers\\FilterController";
+                $method = "actionSortByRating";
+            }
 
             if (class_exists($controller)) {
                 $controllerObject = new $controller;
@@ -92,15 +99,4 @@ class Router {
         }
     }
 }
-// Entry script (e.g., index.php)
-$route = $_SERVER['REQUEST_URI'];
-$requestMethod = $_SERVER['REQUEST_METHOD'];
-
-$router = new \core\Router($route, $requestMethod);
-
-// Define routes
-$router->post('/movies/filter', 'FilterController@filter');
-$router->post('/movies/sortByRating', 'FilterController@sortByRating');
-
-$router->run();
 ?>
