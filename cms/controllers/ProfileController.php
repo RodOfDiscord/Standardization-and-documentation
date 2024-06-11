@@ -25,21 +25,14 @@ class ProfileController extends Controller
             $firstName = $_POST['firstName'];
             $lastName = $_POST['lastName'];
 
-            // Викликаємо метод для оновлення профілю користувача
             Users::update($userId, $firstName, $lastName);
-
-            // Додаємо повідомлення успіху в сесію
             $_SESSION['success_message'] = 'Профіль успішно оновлено.';
 
-            // Перенаправляємо користувача на сторінку профілю
             $core = Core::get();
             $core->redirect("/users/profile");
         }
 
-        // Отримуємо дані користувача для відображення у формі
         $user = Users::getUserById($_SESSION['user']['id']);
-
-        // Рендеримо шаблон сторінки профілю
         $this->view->render('users/profile', [
             'user' => $user
         ]);

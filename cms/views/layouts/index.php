@@ -44,15 +44,38 @@ if (empty($Content)) {
             width: 100%;
             height: 60px;
         }
-        .dropdown-menu {
-            border-radius: 0.25rem;
+        .dropdown.text-end {
+            margin-right: 20px; /* Простір справа */
+        }
+
+        .dropdown.text-end .dropdown-toggle {
+            font-size: 1rem; /* Розмір шрифту */
+            color: #ffffff; /* Колір тексту */
+            text-decoration: none; /* Зняти підкреслення */
+        }
+
+        .dropdown.text-end .dropdown-toggle:hover {
+            color: #f8f9fa; /* Колір тексту при наведенні */
+        }
+
+        .dropdown.text-end .dropdown-menu {
             background-color: #007bff;
+            border: none;
+        }
+
+        .dropdown.text-end .dropdown-item {
             color: #ffffff;
         }
-        .dropdown-item:hover {
-            background-color: #697dff;
+
+        .dropdown.text-end .dropdown-item:hover {
+            background-color: #0056b3;
             color: #ffffff;
         }
+
+        .dropdown.text-end .dropdown-divider {
+            background-color: #ffffff;
+        }
+
         .container {
             padding-top: 70px;
             margin-bottom: 70px;
@@ -134,12 +157,10 @@ if (empty($Content)) {
 
 <footer class="py-3 my-4">
     <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-        <li class="nav-item"><a href="#" class="nav-link px-2 footer-link">Home</a></li>
-        <li class="nav-item"><a href="#" class="nav-link px-2 footer-link">Features</a></li>
-        <li class="nav-item"><a href="#" class="nav-link px-2 footer-link">Pricing</a></li>
-        <li class="nav-item"><a href="#" class="nav-link px-2 footer-link">FAQs</a></li>
-        <li class="nav-item"><a href="#" class="nav-link px-2 footer-link">About</a></li>
+        <li class="nav-item"><a href="https://www.instagram.com/invites/contact/?igsh=1mzgkek2brrkn&utm_content=e5xk419" class="nav-link px-2 footer-link" target="_blank">Instagram</a></li>
+        <li class="nav-item"><a href="https://t.me/ov771" class="nav-link px-2 footer-link" target="_blank">Telegram</a></li>
     </ul>
+
     <p class="text-center">Виконвав студент 2-го курсу Вєщиков Олег</p>
 </footer>
 </body>

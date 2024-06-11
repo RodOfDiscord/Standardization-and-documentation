@@ -16,14 +16,13 @@ class AdminController extends Controller
 
             // Перевірка наявності файлу
             if (!empty($_FILES['image']['tmp_name'])) {
-                $uploadDir = 'views/movies/images/'; // Відносний шлях до директорії завантаження
+                $uploadDir = 'views/movies/images/';
                 $uploadFile = $uploadDir . basename($_FILES['image']['name']);
 
                 // Переміщення завантаженого файлу в директорію
                 if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadFile)) {
                     $imagePath = '/' . $uploadFile;
                 } else {
-                    // Обробка помилок завантаження файлу
                     echo "Помилка завантаження файлу.";
                 }
             }
@@ -50,13 +49,13 @@ class AdminController extends Controller
             $id = $params[0];
         } else {
             echo "ID фільму не вказано.";
-            return;
+            return null;
         }
         $movie = Movies::getMovieById($id);
 
         if (!$movie) {
             echo "Фільм не знайдено.";
-            return;
+            return null;
         }
 
         if ($this->isPost) {
@@ -100,14 +99,14 @@ class AdminController extends Controller
             $id = $params[0];
         } else {
             echo "ID фільму не вказано.";
-            return;
+            return null;
         }
 
         $movie = Movies::getMovieById($id);
 
         if (!$movie) {
             echo "Фільм не знайдено.";
-            return;
+            return null;
         }
 
         $result = Movies::deleteMovieById($id);
@@ -118,7 +117,6 @@ class AdminController extends Controller
             $_SESSION['message'] = "Помилка при видаленні фільму.";
         }
 
-        // Відображення повідомлення на сторінці видалення
         $this->template->setParam('message', $_SESSION['message']);
         return $this->render('views/admin/delete.php');
     }

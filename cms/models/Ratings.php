@@ -4,6 +4,13 @@ namespace models;
 
 use core\Model;
 use core\Core;
+/**
+ * @property int $id ID рейтингу
+ * @property int $movie_id ID фільму
+ * @property int $user_id ID користувача
+ * @property int $rating Рейтинг
+ * @property string $created_at Дата створення рейтингу
+ */
 
 class Ratings extends Model
 {

@@ -61,7 +61,6 @@ class Movies extends Model
             $db = Core::get()->db;
             return $db->update(self::$tableName, $data, ['id' => $id]);
         } catch (\PDOException $e) {
-            // Вивести повідомлення про помилку
             echo "Помилка при оновленні фільму: " . $e->getMessage();
             return false;
         }
@@ -71,7 +70,6 @@ class Movies extends Model
             $db = Core::get()->db;
             return $db->delete(self::$tableName, ['id' => $id]);
         } catch (\PDOException $e) {
-            // Вивести повідомлення про помилку
             echo "Помилка при видаленні фільму: " . $e->getMessage();
             return false;
         }

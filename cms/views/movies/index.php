@@ -96,6 +96,5 @@
         window.location.href = '/movies/sortByRating';
     });
 </script>
-
 </body>
 </html>
