@@ -36,7 +36,7 @@ class AdminController extends Controller
             ];
 
             if (Movies::addMovie($data)) {
-                $this->redirect('/movies/index');
+                $this->redirect('/');
             } else {
                 echo "Помилка збереження даних.";
             }
@@ -85,7 +85,7 @@ class AdminController extends Controller
             ];
 
             if (Movies::updateMovie($id, $data)) {
-                $this->redirect('/movies/index');
+                $this->redirect('/');
             } else {
                 echo "Помилка збереження даних.";
             }

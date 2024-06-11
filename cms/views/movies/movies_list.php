@@ -1,4 +1,3 @@
-
 <?php if (!empty($movies)): ?>
     <?php foreach ($movies as $movie): ?>
         <div class="col-md-4 mb-4">

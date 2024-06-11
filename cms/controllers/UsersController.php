@@ -44,9 +44,8 @@ class UsersController extends Controller
                 $this->addErrorMessage('Паролі не співпадають');
             }
             if (strlen($this->post->get('password')) < 5) {
-                $this->addErrorMessage('Пароль повинен містити не менше 6 символів');
+                $this->addErrorMessage('Пароль повинен містити не менше 5 символів');
             }
-
             if (strlen($this->post->get('password')) === 0) {
                 $this->addErrorMessage('Пароль не вказано');
             }

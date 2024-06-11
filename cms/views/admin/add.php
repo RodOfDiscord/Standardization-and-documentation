@@ -1,6 +1,7 @@
 <?php
 $this->Title = 'Додати новий фільм';
 ?>
+
 <div class="container mt-5">
     <form action="" method="post" enctype="multipart/form-data">
         <div class="form-group">

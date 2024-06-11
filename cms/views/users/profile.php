@@ -3,46 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title>Редагування профілю</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
-            color: #212529;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         .container {
             max-width: 600px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #fff;
-            border: 1px solid #ced4da;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
         }
 
         h1 {
-            font-size: 24px;
-            margin-bottom: 20px;
+            text-align: center;
+            margin-bottom: 30px;
         }
 
         .success-message {
             background-color: #d4edda;
+            border-color: #c3e6cb;
             color: #155724;
-            border: 1px solid #c3e6cb;
-            border-radius: 5px;
             padding: 10px;
+            border-radius: 5px;
             margin-bottom: 20px;
         }
 
         .error-message {
             background-color: #f8d7da;
+            border-color: #f5c6cb;
             color: #721c24;
-            border: 1px solid #f5c6cb;
-            border-radius: 5px;
             padding: 10px;
+            border-radius: 5px;
             margin-bottom: 20px;
         }
 
@@ -50,31 +37,19 @@
             margin-bottom: 20px;
         }
 
-        label {
-            font-weight: bold;
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ced4da;
-            border-radius: 3px;
-            box-sizing: border-box;
-        }
-
         button[type="submit"] {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
+            background-color: yellow;
+            color: blue;
             border: none;
-            border-radius: 3px;
-            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 5px;
         }
 
         button[type="submit"]:hover {
-            background-color: #0056b3;
+            background-color: gold;
+            color: darkblue;
         }
     </style>
 </head>
@@ -95,19 +70,21 @@
                 <p><?php echo htmlspecialchars($error); ?></p>
             <?php endforeach; ?>
         </div>
-    <?php else: ?>
-        <form method="POST" action="/users/profile">
-            <div class="form-group">
-                <label for="firstName">Ім'я:</label>
-                <input type="text" id="firstName" name="firstName" value="<?php echo htmlspecialchars($user['firstname'] ?? ''); ?>">
-            </div>
-            <div class="form-group">
-                <label for="lastName">Прізвище:</label>
-                <input type="text" id="lastName" name="lastName" value="<?php echo htmlspecialchars($user['lastname'] ?? ''); ?>">
-            </div>
-            <button type="submit">Зберегти зміни</button>
-        </form>
     <?php endif; ?>
+
+    <form method="POST" action="/users/profile">
+        <div class="form-group">
+            <label for="firstName">Ім'я:</label>
+            <input type="text" id="firstName" name="firstName" class="form-control" value="<?php echo htmlspecialchars($user['firstname'] ?? ''); ?>">
+        </div>
+        <div class="form-group">
+            <label for="lastName">Прізвище:</label>
+            <input type="text" id="lastName" name="lastName" class="form-control" value="<?php echo htmlspecialchars($user['lastname'] ?? ''); ?>">
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Зберегти зміни</button>
+        </div>
+    </form>
 </div>
 </body>
 </html>

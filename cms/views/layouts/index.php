@@ -21,10 +21,12 @@ if (empty($Content)) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
         body {
-            background-color: #f0f8ff;
-            color: #343a40;
-            margin: 0;
-            padding: 0;
+            background-image: url('/views/movies/images/bek2.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
         .nav-link {
             font-weight: 500;
@@ -35,12 +37,12 @@ if (empty($Content)) {
         }
         header {
             background-color: #007bff;
-        
             top: 0;
             left: 0;
             right: 0;
             z-index: 900;
             width: 100%;
+            height: 60px;
         }
         .dropdown-menu {
             border-radius: 0.25rem;
@@ -53,25 +55,27 @@ if (empty($Content)) {
         }
         .container {
             padding-top: 70px;
-            margin-bottom: 70px; /* Додаємо нижній відступ, щоб контент не перекривав футер */
+            margin-bottom: 70px;
+            flex: 1;
         }
         .container h1 {
             margin-top: 20px;
             margin-bottom: 20px;
             font-size: 2.5rem;
             text-align: center;
-            color: #6982ff;
+            color: yellow;
         }
         footer {
             border-top: 1px solid #e9ecef;
             background-color: #007bff;
             color: #ffffff;
-
-            bottom: 0; /* Встановлюємо його внизу */
+            bottom: 0;
             left: 0;
             right: 0;
             z-index: 900;
             width: 100%;
+            padding: 1rem 0;
+            text-align: center;
         }
         .footer-link {
             color: #ffffff !important;
@@ -79,6 +83,7 @@ if (empty($Content)) {
         .footer-link:hover {
             color: #6975ff !important;
         }
+
     </style>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </head>
@@ -112,9 +117,7 @@ if (empty($Content)) {
 
     <?php if (Users::IsUserLogged()) : ?>
         <div class="dropdown text-end">
-            <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-
-            </a>
+            <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"> Меню</a>
             <ul class="dropdown-menu text-small">
                 <li><a class="dropdown-item" href="/users/profile">Профіль</a></li>
                 <li><hr class="dropdown-divider"></li>
@@ -137,7 +140,7 @@ if (empty($Content)) {
         <li class="nav-item"><a href="#" class="nav-link px-2 footer-link">FAQs</a></li>
         <li class="nav-item"><a href="#" class="nav-link px-2 footer-link">About</a></li>
     </ul>
-    <p class="text-center">© 2024 Company, Inc</p>
+    <p class="text-center">Виконвав студент 2-го курсу Вєщиков Олег</p>
 </footer>
 </body>
 </html>

@@ -10,24 +10,103 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Деталі фільму</title>
     <style>
-        .fixed-size-img-container {
-            width: 500px;
-            height: 500px;
-            overflow: hidden;
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .comment {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .comment-header {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
         }
 
-        .fixed-size-img-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .comment-user {
+            font-weight: bold;
+
         }
 
         .comment-date {
             font-size: 0.8em;
-            color: gray;
+            color: #777;
+        }
+
+        .comment-text {
+            margin-top: 5px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: yellow;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            margin-top: 0;
+            font-size: 24px;
+            color: #333;
+        }
+
+        p {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-top: 4px;
+            margin-bottom: 8px;
+            resize: vertical;
+        }
+
+        .btn {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 20px;
+        }
+
+        .comment-date {
+            font-size: 0.8em;
+            color: #777;
         }
     </style>
 </head>
@@ -43,50 +122,45 @@
     <p>Жанр: <?= htmlspecialchars($movie['genre']) ?></p>
     <p>Опис: <?= htmlspecialchars($movie['Txt_Description']) ?></p>
     <p>Середня оцінка: <?= htmlspecialchars($averageRating) ?></p>
-</div>
 
-<?php if (models\Users::IsUserLogged()): ?>
-    <form method="post" action="">
-        <div class="form-group">
-            <label for="rating">Ваша оцінка:</label>
-            <select id="rating" name="rating" class="form-control">
-                <option value="">Без оцінки</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="comment">Ваш коментар:</label>
-            <textarea id="comment" name="comment" class="form-control"></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Залишити оцінку та коментар</button>
-    </form>
-<?php else: ?>
-    <p>Щоб залишити оцінку і коментар, будь ласка, <a href="/users/login">увійдіть в систему</a>.</p>
-<?php endif; ?>
+    <?php if (models\Users::IsUserLogged()): ?>
+        <form method="post" action="">
+            <div class="form-group">
+                <label for="rating">Ваша оцінка:</label>
+                <select id="rating" name="rating">
+                    <option value="">Без оцінки</option>
+                    <?php for ($i = 1; $i <= 10; $i++): ?>
+                        <option value="<?= $i ?>"><?= $i ?></option>
+                    <?php endfor; ?>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="comment">Ваш коментар:</label>
+                <textarea id="comment" name="comment" rows="4"></textarea>
+            </div>
+            <button type="submit" class="btn">Залишити оцінку та коментар</button>
+        </form>
+    <?php else: ?>
+        <p>Щоб залишити оцінку і коментар, будь ласка, <a href="/users/login">увійдіть в систему</a>.</p>
+    <?php endif; ?>
 
-<h2>Коментарі</h2>
-<?php if (!empty($comments)): ?>
-    <ul>
-        <?php foreach ($comments as $comment): ?>
-            <li>
-                <strong><?= htmlspecialchars($comment['username'] ?? 'Анонімний користувач') ?>:</strong>
-                <span class="comment-date"><?= htmlspecialchars($comment['created_at']) ?></span>
-                <?= htmlspecialchars($comment['content']) ?>
-            </li>
-        <?php endforeach; ?>
-    </ul>
-<?php else: ?>
-    <p>Немає коментарів до цього фільму.</p>
-<?php endif; ?>
+    <h2>Коментарі</h2>
+    <?php if (!empty($comments)): ?>
+        <ul class="comments">
+            <?php foreach ($comments as $comment): ?>
+                <li class="comment">
+                    <div class="comment-header">
+                        <span class="comment-user"><?= htmlspecialchars($comment['username'] ?? 'Анонімний користувач') ?>:</span>
+                        <span class="comment-date"><?= htmlspecialchars($comment['created_at']) ?></span>
+                    </div>
+                    <div class="comment-text"><?= htmlspecialchars($comment['content']) ?></div>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    <?php else: ?>
+        <p>Немає коментарів до цього фільму.</p>
+    <?php endif; ?>
+
 </div>
 </body>
 </html>

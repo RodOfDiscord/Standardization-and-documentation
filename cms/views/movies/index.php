@@ -7,7 +7,7 @@
     <style>
         .card-img-container {
             width: 100%;
-            height: 500px;
+            height: 600px;
             overflow: hidden;
         }
 
@@ -23,39 +23,61 @@
         }
 
         .btn-container {
-            margin-top: 10px;
+            margin-top: 20px;
+            margin-bottom: 20px;
             text-align: center;
         }
 
         .btn-container .btn {
-            margin-top: 10px;
+            margin: 5px;
+            background-color: yellow;
+            color: blue;
+            border: none;
+            font-size: 18px; /* Зміна розміру шрифту */
+            font-weight: bold; /* Додавання жирності шрифту */
+        }
+
+        .btn-container .btn:hover {
+            background-color: gold;
+            color: darkblue;
+        }
+
+        #filterForm {
+            margin-top: 20px;
+            display: none;
+        }
+
+        #moviesContainer {
+            margin-top: 30px;
         }
     </style>
 </head>
 <body>
 <div class="container mt-5">
-    <h1 class="mb-4">Наявні фільми</h1>
+    <h1 class="mb-4">Наявні фільми:</h1>
 
-    <button id="filterButton" class="btn btn-secondary">Фільтрувати</button>
-    <div id="filterForm" style="display:none;">
+    <div class="btn-container">
+        <button id="filterButton" class="btn btn-secondary">Фільтрувати</button>
+        <button id="sortRatingButton" class="btn btn-primary">Сортувати за рейтингом</button>
+    </div>
+
+    <div id="filterForm">
         <form method="post" action="/movies/filter">
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label for="title">Назва фільму:</label>
                 <input type="text" id="title" name="title" class="form-control">
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label for="genre">Жанр:</label>
                 <input type="text" id="genre" name="genre" class="form-control">
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label for="release_Year">Рік випуску:</label>
                 <input type="number" id="release_Year" name="release_Year" class="form-control">
             </div>
             <button type="submit" class="btn btn-primary">Відправити</button>
         </form>
     </div>
-
-    <button id="sortRatingButton" class="btn btn-primary">Сортувати за рейтингом</button>
 
     <div id="moviesContainer">
         <div class="row" id="moviesList">
