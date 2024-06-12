@@ -161,7 +161,7 @@ if (empty($Content)) {
         <li class="nav-item"><a href="https://t.me/ov771" class="nav-link px-2 footer-link" target="_blank">Telegram</a></li>
     </ul>
 
-    <p class="text-center">Виконвав студент 2-го курсу Вєщиков Олег</p>
+    <p class="text-center">Виконав студент 2-го курсу Вєщиков Олег</p>
 </footer>
 </body>
 </html>

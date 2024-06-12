@@ -86,14 +86,43 @@
     </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    document.getElementById('filterButton').addEventListener('click', function() {
-        var filterForm = document.getElementById('filterForm');
-        filterForm.style.display = filterForm.style.display === 'none' ? 'block' : 'none';
-    });
+    $(document).ready(function(){
+        $('#filterButton').click(function() {
+            $('#filterForm').toggle();
+        });
 
-    document.getElementById('sortRatingButton').addEventListener('click', function() {
-        window.location.href = '/movies/sortByRating';
+        $('#filterFormElement').submit(function(event) {
+            event.preventDefault();
+            $.ajax({
+                url: '/movies/filter',
+                type: 'POST',
+                dataType: 'html',
+                data: $(this).serialize(),
+                success: function(response){
+                    $('#moviesList').html(response);
+                },
+                error: function(xhr, status, error){
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+
+        $('#sortRatingButton').click(function() {
+            $.ajax({
+                url: '/movies/sortByRating',
+                type: 'GET',
+                dataType: 'html',
+                success: function(response){
+                    $('#moviesList').html(response);
+                    window.location.href = '/movies/sortByRating';
+                },
+                error: function(xhr, status, error){
+                    console.error(xhr.responseText);
+                }
+            });
+        });
     });
 </script>
 </body>
