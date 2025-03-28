@@ -1,3 +1,9 @@
+<?php
+$cookieConsentGiven = isset($_COOKIE['cookie_consent']) && $_COOKIE['cookie_consent'] === 'yes';
+$cookieConsentDeclined = isset($_COOKIE['cookie_consent']) && $_COOKIE['cookie_consent'] === 'no';
+?>
+
+?>
 <!DOCTYPE html>
 <html lang="uk">
 <head>
@@ -50,11 +56,42 @@
         #moviesContainer {
             margin-top: 30px;
         }
+
+        .cookie-popup {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #000;
+            color: #fff;
+            padding: 15px;
+            text-align: center;
+            z-index: 9999;
+        }
+
+        .cookie-popup button {
+            background-color: #f1d600;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .cookie-popup button:hover {
+            background-color: #f1c40f;
+        }
     </style>
 </head>
 <body>
 <div class="container mt-5">
     <h1 class="mb-4">Наявні фільми:</h1>
+    <!-- Відображення попапу для згоди або відмови -->
+    <?php if (!$cookieConsentGiven && !$cookieConsentDeclined): ?>
+        <div id="cookiePopup" class="cookie-popup">
+            <p>Ми використовуємо cookies, щоб забезпечити найкращий досвід на нашому сайті. <a href="/privacy-policy.php">Дізнатися більше</a></p>
+            <button id="acceptCookiesBtn" class="btn btn-primary">Погоджуюсь</button>
+            <button id="declineCookiesBtn" class="btn btn-secondary">Відмовитися</button>
+        </div>
+    <?php endif; ?>
+
 
     <div class="btn-container">
         <button id="filterButton" class="btn btn-secondary">Фільтрувати</button>
@@ -87,8 +124,19 @@
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.1/cookieconsent.min.js"></script>
 <script>
-    $(document).ready(function(){
+    $(document).ready(function() {
+        $('#acceptCookiesBtn').click(function() {
+            document.cookie = "cookie_consent=yes; path=/; max-age=" + (60 * 60 * 24 * 365); // на рік
+            $('#cookiePopup').hide();
+        });
+
+        $('#declineCookiesBtn').click(function() {
+            document.cookie = "cookie_consent=no; path=/; max-age=" + (60 * 60 * 24 * 365); // на рік
+            $('#cookiePopup').hide();
+        });
+
         $('#filterButton').click(function() {
             $('#filterForm').toggle();
         });
@@ -100,10 +148,10 @@
                 type: 'POST',
                 dataType: 'html',
                 data: $(this).serialize(),
-                success: function(response){
+                success: function(response) {
                     $('#moviesList').html(response);
                 },
-                error: function(xhr, status, error){
+                error: function(xhr, status, error) {
                     console.error(xhr.responseText);
                 }
             });
@@ -114,11 +162,11 @@
                 url: '/movies/sortByRating',
                 type: 'GET',
                 dataType: 'html',
-                success: function(response){
+                success: function(response) {
                     $('#moviesList').html(response);
                     window.location.href = '/movies/sortByRating';
                 },
-                error: function(xhr, status, error){
+                error: function(xhr, status, error) {
                     console.error(xhr.responseText);
                 }
             });

@@ -1,0 +1,66 @@
+openapi: 3.0.0
+info:
+  title: Coursework2024 API
+  description: API для роботи з фільмами та коментарями
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000/api
+    description: Локальний сервер
+
+paths:
+  /movies:
+    get:
+      summary: Отримати список фільмів
+      description: Повертає всі фільми з бази даних
+      responses:
+        '200':
+          description: Успішна відповідь
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1
+                    title:
+                      type: string
+                      example: "Inception"
+                    genre:
+                      type: string
+                      example: "Sci-Fi"
+                    release_Year:
+                      type: integer
+                      example: 2010
+
+  /movies/{id}/comments:
+    post:
+      summary: Додати коментар до фільму
+      description: Користувач може залишити коментар до конкретного фільму
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID фільму
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: "John Doe"
+                content:
+                  type: string
+                  example: "Цей фільм просто чудовий!"
+      responses:
+        '201':
+          description: Коментар успішно доданий
+        '400':
+          description: Некоректний запит

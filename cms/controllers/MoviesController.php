@@ -20,8 +20,6 @@ class MoviesController extends Controller
     public function actionView($params)
     {
         $movieId = $params[0];
-
-        // Якщо є POST-запит, обробимо його
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->handlePostRequest($movieId);
         }

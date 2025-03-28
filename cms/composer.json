@@ -1,0 +1,19 @@
+{
+    "name": "oleg/coursework",
+    "description": "none",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "olegveshchykov",
+            "email": "ipz222_vom@student.ztu.edu.ua"
+        }
+    ],
+    "require": {
+        "zircote/swagger-php": "^5.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "symfony/flex": true
+        }
+    }
+}
